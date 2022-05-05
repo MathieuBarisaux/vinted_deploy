@@ -6,7 +6,7 @@ const Offer = require("../models/Offer");
 
 const cloudinary = require("../tools/cloudinary");
 
-// ** creat offer road **
+// ** create offer road **
 router.post("/offer/publish", isAuthenticated, async (req, res) => {
   try {
     if (req.fields.title && req.fields.description && req.fields.price) {
