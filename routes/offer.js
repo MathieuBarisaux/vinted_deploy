@@ -12,14 +12,14 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
     if (req.fields.title && req.fields.description && req.fields.price) {
       const newOffer = await new Offer({
         product_name: req.fields.title,
-        product_description: req.fields.desciption,
+        product_description: req.fields.description,
         product_price: req.fields.price,
         product_details: [
           { marque: req.fields.brand },
           { emplacement: req.fields.city },
           { couleur: req.fields.color },
           { taille: req.fields.size },
-          { etat: req.fields.condition },
+          { etat: req.fields.state },
         ],
         owner: req.fields._id,
       });
@@ -27,7 +27,6 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
       await newOffer.save();
 
       if (req.files.picture) {
-        console.log("lol");
         const picture = req.files.picture.path;
         const uploadPicture = await cloudinary.uploader.upload(picture, {
           folder: `/vinted/offers/${newOffer._id}`,
@@ -44,6 +43,7 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
     }
   } catch (error) {
     res.status(400).json(error.message);
+    console.log(error.message);
   }
 });
 
@@ -92,7 +92,7 @@ router.get("/offers", async (req, res) => {
     const page = req.query.page;
     const pageToSkip = (page - 1) * 2;
 
-    //creat filter for .find()
+    //create filter for .find()
     let filterProduct = {};
 
     // Title filter
