@@ -76,7 +76,7 @@ router.post("/user/login", async (req, res) => {
         res.status(200).json({
           token: findUser.token,
           username: findUser.account.username,
-          id: findUser.account._id,
+          id: findUser._id,
         });
       } else {
         res.status(400).json({ message: "Invalid password" });
