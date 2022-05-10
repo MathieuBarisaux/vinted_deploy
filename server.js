@@ -22,6 +22,8 @@ const userRoad = require("./routes/user");
 app.use(userRoad);
 const offerRoad = require("./routes/offer");
 app.use(offerRoad);
+const payRoad = require("./routes/payement");
+app.use(payRoad);
 
 // ** 404 not found **
 app.all("*", (req, res) => {
