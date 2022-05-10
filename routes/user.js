@@ -67,12 +67,17 @@ router.post("/user/login", async (req, res) => {
     const password = req.fields.password;
 
     const findUser = await User.findOne({ email: userMail });
+    console.log(findUser);
 
     if (findUser) {
       const testHash = SHA256(password + findUser.salt).toString(encBase64);
 
       if (testHash === findUser.hash) {
-        res.status(200).json({ token: findUser.token });
+        res.status(200).json({
+          token: findUser.token,
+          username: findUser.account.username,
+          id: findUser.account._id,
+        });
       } else {
         res.status(400).json({ message: "Invalid password" });
       }

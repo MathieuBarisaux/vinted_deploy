@@ -88,10 +88,6 @@ router.get("/offers", async (req, res) => {
     let result = {};
     let totalAnnounce = {};
 
-    // Page filter
-    const page = req.query.page;
-    const pageToSkip = (page - 1) * 2;
-
     //create filter for .find()
     let filterProduct = {};
 
@@ -123,12 +119,11 @@ router.get("/offers", async (req, res) => {
 
     // Result
     result = await Offer.find(filterProduct)
-      .limit(2)
-      .skip(pageToSkip)
+      .populate("owner")
       .sort(sortPriceFilter);
     totalAnnounce = await Offer.countDocuments(filterProduct);
 
-    res.status(200).json({ totalAnnounce, result });
+    res.status(200).json({ totalAnnounce, offers: result });
   } catch (error) {
     res.status(400).json(error.message);
   }
@@ -140,7 +135,7 @@ router.get("/offer/:id", async (req, res) => {
     console.log(req.params.id);
     const offerFind = await Offer.findById(req.params.id).populate({
       path: "owner",
-      select: "account.username email -_id",
+      select: "account.username email -_id avatar",
     });
 
     res.status(200).json(offerFind);

@@ -10,7 +10,11 @@ const User = mongoose.model("User", {
       required: true,
       type: String,
     },
-    avatar: Object,
+    avatar: {
+      type: Object,
+      default:
+        "https://res.cloudinary.com/vintedcopy/image/upload/v1652180143/vinted/Users/default/06_gcg01t.png",
+    },
   },
   newsletter: Boolean,
   token: String,
